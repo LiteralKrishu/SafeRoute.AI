@@ -13,7 +13,6 @@ Pillow>=10.0.0
 opencv-python>=4.8.0
 ultralytics>=8.0.0
 scipy>=1.11.0
-mapbox>=1.4.0
+mapbox==0.18.1
 redis>=5.0.0
 networkx>=3.0
-sqlite3
