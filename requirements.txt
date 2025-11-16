@@ -1,4 +1,4 @@
-﻿streamlit>=1.28.0
+streamlit>=1.28.0
 streamlit-folium>=0.15.0
 folium>=0.14.0
 pandas>=2.0.0
@@ -13,6 +13,7 @@ Pillow>=10.0.0
 opencv-python>=4.8.0
 ultralytics>=8.0.0
 scipy>=1.11.0
-mapbox==0.18.1
+mapbox>=1.4.0
 redis>=5.0.0
 networkx>=3.0
+sqlite3

@@ -30,7 +30,7 @@ class FinalSafeRouteApp:
         self.hazard_map = HazardMap()
         
     def render_sidebar(self):
-        \"\"\"Render enhanced sidebar with authentication\"\"\"
+        """Render enhanced sidebar with authentication"""
         # Authentication
         user = self.auth.render_login_sidebar()
         
@@ -72,7 +72,7 @@ class FinalSafeRouteApp:
         }
     
     def render_main_dashboard(self, filters):
-        \"\"\"Render enhanced main dashboard\"\"\"
+        """Render enhanced main dashboard"""
         if filters is None:
             st.warning("ðŸ” Please log in to access SafeRoute.AI")
             return
@@ -123,7 +123,7 @@ class FinalSafeRouteApp:
     
     @ErrorHandler.handle_errors
     def render_enhanced_hazard_map(self, filters):
-        \"\"\"Render enhanced hazard map with clustering\"\"\"
+        """Render enhanced hazard map with clustering"""
         st.subheader("ðŸ—ºï¸ Live Hazard Intelligence Map")
         
         col1, col2 = st.columns([3, 1])
@@ -148,7 +148,7 @@ class FinalSafeRouteApp:
             self.render_hazard_insights(hazards_df)
     
     def render_hazard_insights(self, hazards_df):
-        \"\"\"Render hazard insights and alerts\"\"\"
+        """Render hazard insights and alerts"""
         st.subheader("ðŸ“ˆ Hazard Insights")
         
         if not hazards_df.empty:
@@ -174,7 +174,7 @@ class FinalSafeRouteApp:
     
     @ErrorHandler.handle_errors
     def render_route_planner_tab(self):
-        \"\"\"Render enhanced route planning interface\"\"\"
+        """Render enhanced route planning interface"""
         st.subheader("ðŸš— Smart Route Planning")
         
         col1, col2 = st.columns(2)
@@ -226,7 +226,7 @@ class FinalSafeRouteApp:
                         st.write(f"âœ… {hazard}")
     
     def render_community_reporting_tab(self):
-        \"\"\"Render community reporting and engagement\"\"\"
+        """Render community reporting and engagement"""
         st.subheader("ðŸ“ Community Safety Ecosystem")
         
         tab1, tab2, tab3 = st.tabs(["Report Hazard", "My Reports", "Community Stats"])
@@ -241,7 +241,7 @@ class FinalSafeRouteApp:
             self.render_community_stats()
     
     def render_user_reports(self):
-        \"\"\"Render user's submitted reports\"\"\"
+        """Render user's submitted reports"""
         if 'user' not in st.session_state:
             st.warning("Please log in to view your reports")
             return
@@ -264,7 +264,7 @@ class FinalSafeRouteApp:
             st.info("You haven't submitted any reports yet")
     
     def render_community_stats(self):
-        \"\"\"Render community statistics\"\"\"
+        """Render community statistics"""
         stats = self.db.get_hazard_stats()
         
         col1, col2, col3 = st.columns(3)
@@ -290,7 +290,7 @@ class FinalSafeRouteApp:
     
     @ErrorHandler.handle_errors
     def render_safety_recommendations_tab(self, filters):
-        \"\"\"Render AI safety advisor with enhanced capabilities\"\"\"
+        """Render AI safety advisor with enhanced capabilities"""
         st.subheader("ðŸ¤– AI Safety Advisor")
         
         # Real-time analysis
@@ -332,7 +332,7 @@ class FinalSafeRouteApp:
             self.render_ai_analysis(st.session_state['ai_analysis'])
     
     def render_ai_analysis(self, analysis):
-        \"\"\"Render comprehensive AI analysis\"\"\"
+        """Render comprehensive AI analysis"""
         st.subheader("ðŸŽ¯ AI Safety Recommendations")
         
         for i, rec in enumerate(analysis):
@@ -365,7 +365,7 @@ class FinalSafeRouteApp:
                             st.success(f"Progress updated to {current_progress}%")
     
     def render_enhanced_analytics_tab(self, user):
-        \"\"\"Render advanced analytics dashboard\"\"\"
+        """Render advanced analytics dashboard"""
         st.subheader("ðŸ“Š Advanced Analytics & Business Intelligence")
         
         if 'user' not in st.session_state or st.session_state.user['role'] != 'admin':
@@ -389,7 +389,7 @@ class FinalSafeRouteApp:
             self.render_system_analytics()
     
     def render_trend_analysis(self):
-        \"\"\"Render trend analysis charts\"\"\"
+        """Render trend analysis charts"""
         st.write("**Hazard Trends Over Time**")
         
         # Mock data
@@ -404,7 +404,7 @@ class FinalSafeRouteApp:
         st.line_chart(trend_data.set_index('Month'))
     
     def render_risk_forecasting(self):
-        \"\"\"Render risk forecasting interface\"\"\"
+        """Render risk forecasting interface"""
         st.write("**Predictive Risk Forecasting**")
         
         # Forecasting parameters
@@ -437,7 +437,7 @@ class FinalSafeRouteApp:
                         st.write(f"- {item}")
     
     def render_cost_benefit_analysis(self):
-        \"\"\"Render cost-benefit analysis\"\"\"
+        """Render cost-benefit analysis"""
         st.write("**Cost-Benefit Analysis**")
         
         interventions = [
@@ -457,7 +457,7 @@ class FinalSafeRouteApp:
                     st.metric("ROI", intervention['roi'])
     
     def render_system_analytics(self):
-        \"\"\"Render system performance analytics\"\"\"
+        """Render system performance analytics"""
         st.write("**System Performance Analytics**")
         
         # Performance metrics
@@ -472,7 +472,7 @@ class FinalSafeRouteApp:
             st.metric("User Satisfaction", "4.7/5", "0.2 â†‘")
     
     def run(self):
-        \"\"\"Run the final application\"\"\"
+        """Run the final application"""
         filters = self.auth.render_login_sidebar()
         if filters and filters.get('user'):
             self.render_main_dashboard(filters)
