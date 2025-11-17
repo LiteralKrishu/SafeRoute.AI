@@ -1,7 +1,7 @@
 ﻿import redis
 import pickle
 import json
-from datetime import timedelta
+from datetime import datetime, timedelta
 import streamlit as st
 
 class CacheManager:
@@ -15,7 +15,7 @@ class CacheManager:
             self.memory_cache = {}
     
     def set(self, key, value, expire_minutes=10):
-        \"\"\"Cache data with expiration\"\"\"
+        """Cache data with expiration"""
         if self.redis_available:
             try:
                 self.redis_client.setex(
@@ -26,16 +26,16 @@ class CacheManager:
             except:
                 self.memory_cache[key] = {
                     'value': value,
-                    'expiry': st.datetime.now() + timedelta(minutes=expire_minutes)
+                    'expiry': datetime.now() + timedelta(minutes=expire_minutes)
                 }
         else:
             self.memory_cache[key] = {
                 'value': value,
-                'expiry': st.datetime.now() + timedelta(minutes=expire_minutes)
+                'expiry': datetime.now() + timedelta(minutes=expire_minutes)
             }
     
     def get(self, key):
-        \"\"\"Retrieve cached data\"\"\"
+        """Retrieve cached data"""
         if self.redis_available:
             try:
                 cached = self.redis_client.get(key)
@@ -46,10 +46,10 @@ class CacheManager:
             return self._get_from_memory(key)
     
     def _get_from_memory(self, key):
-        \"\"\"Get from in-memory cache with expiry check\"\"\"
+        """Get from in-memory cache with expiry check"""
         if key in self.memory_cache:
             cache_entry = self.memory_cache[key]
-            if st.datetime.now() < cache_entry['expiry']:
+            if datetime.now() < cache_entry['expiry']:
                 return cache_entry['value']
             else:
                 del self.memory_cache[key]
@@ -62,13 +62,13 @@ class CachedDataIngestion:
         self.db = DatabaseManager()
     
     def get_cached_hazards(self, bbox, force_refresh=False):
-        \"\"\"Get hazards with caching\"\"\"
-        cache_key = f\"hazards_{bbox}\"
+        """Get hazards with caching"""
+        cache_key = f"hazards_{bbox}"
         
         if not force_refresh:
             cached = self.cache.get(cache_key)
             if cached is not None:
-                st.sidebar.info(\"Using cached data\")
+                st.sidebar.info("Using cached data")
                 return cached
         
         # Fetch fresh data

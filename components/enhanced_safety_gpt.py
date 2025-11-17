@@ -12,20 +12,20 @@ class EnhancedSafetyGPT:
         self.guidelines_db = self._load_guidelines()
     
     def initialize_openai(self):
-        \"\"\"Initialize OpenAI client\"\"\"
+        """Initialize OpenAI client"""
         if Config.OPENAI_API_KEY and Config.OPENAI_API_KEY != 'mock_key_for_demo':
             try:
                 openai.api_key = Config.OPENAI_API_KEY
                 self.client = openai.OpenAI(api_key=Config.OPENAI_API_KEY)
-                st.success("âœ… OpenAI GPT integration active")
+                st.success("OpenAI GPT integration active")
             except Exception as e:
                 st.error(f"OpenAI initialization failed: {e}")
                 self.client = None
         else:
-            st.warning("ðŸš¨ Using demo mode for GPT - add OPENAI_API_KEY for real AI")
+            st.warning("Using demo mode for GPT - add OPENAI_API_KEY for real AI")
     
     def generate_recommendations(self, area, focus_areas, time_range, hazard_data=None):
-        \"\"\"Generate AI-powered safety recommendations with real GPT\"\"\"
+        """Generate AI-powered safety recommendations with real GPT"""
         if self.client is None:
             return self._mock_recommendations(area, focus_areas, time_range)
         
@@ -38,9 +38,9 @@ class EnhancedSafetyGPT:
                 messages=[
                     {
                         "role": "system",
-                        "content": \"\"\"You are a road safety expert specializing in IRC (Indian Roads Congress) 
+                        "content": """You are a road safety expert specializing in IRC (Indian Roads Congress) 
                         and MoRTH (Ministry of Road Transport and Highways) guidelines. Provide detailed, 
-                        actionable recommendations with specific clause references.\"\"\"
+                        actionable recommendations with specific clause references."""
                     },
                     {
                         "role": "user", 
@@ -58,11 +58,11 @@ class EnhancedSafetyGPT:
             return self._mock_recommendations(area, focus_areas, time_range)
     
     def generate_comprehensive_analysis(self, scope, focus_areas, urgency, hazard_data):
-        \"\"\"Generate comprehensive safety analysis\"\"\"
-        return self._mock_recommendations(\"Delhi Central\", focus_areas, \"Last 30 days\")
+        """Generate comprehensive safety analysis"""
+        return self._mock_recommendations("Delhi Central", focus_areas, "Last 30 days")
     
     def _build_context(self, area, focus_areas, time_range, hazard_data):
-        \"\"\"Build context for GPT analysis\"\"\"
+        """Build context for GPT analysis"""
         context = {
             "area": area,
             "focus_areas": focus_areas,
@@ -73,8 +73,8 @@ class EnhancedSafetyGPT:
         return context
     
     def _build_prompt(self, context):
-        \"\"\"Build detailed prompt for GPT\"\"\"
-        return f\"\"\"
+        """Build detailed prompt for GPT"""
+        return f"""
         As a road safety expert, analyze the following situation and provide detailed recommendations:
         
         AREA: {context['area']}
@@ -82,17 +82,17 @@ class EnhancedSafetyGPT:
         TIME RANGE: {context['time_range']}
         HAZARD SUMMARY: {context['hazard_summary']}
         
-        Please provide 3-5 detailed safety recommendations based on IRC and MoRTH guidelines.
-        Be specific with clause references and practical solutions.
-        \"\"\"
+    Please provide 3-5 detailed safety recommendations based on IRC and MoRTH guidelines.
+    Be specific with clause references and practical solutions.
+    """
     
     def _parse_gpt_response(self, response_text):
-        \"\"\"Parse GPT response\"\"\"
+        """Parse GPT response"""
         # For demo, return mock recommendations
         return self._mock_recommendations()
     
     def _load_guidelines(self):
-        \"\"\"Load safety guidelines database\"\"\"
+        """Load safety guidelines database"""
         return {
             "IRC 35-2015": "Road Safety Requirements",
             "IRC 67-2012": "Code of Practice for Road Signs",
@@ -102,7 +102,7 @@ class EnhancedSafetyGPT:
         }
     
     def _summarize_hazards(self, hazard_data):
-        \"\"\"Summarize hazard data for GPT context\"\"\"
+        """Summarize hazard data for GPT context"""
         if hasattr(hazard_data, 'shape'):
             # It's a DataFrame
             summary = f"Total hazards: {len(hazard_data)}, "
@@ -112,7 +112,7 @@ class EnhancedSafetyGPT:
         return str(hazard_data)
     
     def _mock_recommendations(self, area=None, focus_areas=None, time_range=None):
-        \"\"\"Fallback mock recommendations\"\"\"
+        """Fallback mock recommendations"""
         return [
             {
                 "title": "Pothole Remediation Program",
@@ -121,7 +121,7 @@ class EnhancedSafetyGPT:
                 "intervention": "Immediate cold-mix patching + scheduled hot-mix overlay with improved drainage integration",
                 "references": "IRC:35-2015 Clause 4.2.3, MoRTH Section 1800, IRC:67-2012 Section 5.4",
                 "impact": "Reduce pothole-related accidents by 75%, improve ride quality, extend road surface life by 40%",
-                "estimated_cost": "â‚¹2.5-4 lakhs/km",
+                "estimated_cost": "INR 2.5-4 lakhs/km",
                 "timeline": "2-4 weeks",
                 "implementation_status": random.randint(10, 40),
                 "risk_reduction": "65%"
@@ -133,7 +133,7 @@ class EnhancedSafetyGPT:
                 "intervention": "Comprehensive drain cleaning and desilting program. Install additional catch pits at 50m intervals. Improve cross-fall to drainage inlets and add redundant overflow systems",
                 "references": "IRC:SP-42 Clause 7.4.2, IRC:67-2012 Section 5, MoRTH Drainage Manual Chapter 3",
                 "impact": "Eliminate waterlogging in 90% of reported areas, prevent pavement damage from water seepage, improve skid resistance during rains",
-                "estimated_cost": "â‚¹8-12 lakhs per km",
+                "estimated_cost": "INR 8-12 lakhs per km",
                 "timeline": "4-6 weeks", 
                 "implementation_status": random.randint(5, 20),
                 "risk_reduction": "45%"

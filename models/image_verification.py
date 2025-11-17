@@ -18,22 +18,22 @@ class ImageVerification:
         }
     
     def load_model(self):
-        \"\"\"Load YOLOv8 model - in real implementation, load actual trained model\"\"\"
+        """Load YOLOv8 model - in real implementation, load actual trained model"""
         try:
             # This would load your trained model in real implementation
             # from ultralytics import YOLO
             # self.model = YOLO(Config.YOLO_MODEL_PATH)
-            st.success("âœ… Image verification model loaded (Demo Mode)")
+            st.success("Image verification model loaded (Demo Mode)")
         except ImportError:
-            st.warning("ðŸš¨ YOLOv8 not available - using demo verification")
+            st.warning("YOLOv8 not available - using demo verification")
     
     def verify_hazard_image(self, image_file, reported_hazard_type):
-        \"\"\"Verify hazard from uploaded image\"\"\"
+        """Verify hazard from uploaded image"""
         # Demo mode - simulate verification
         return self._demo_verification(image_file, reported_hazard_type)
     
     def _demo_verification(self, image_file, reported_hazard_type):
-        \"\"\"Demo verification for hackathon\"\"\"
+        """Demo verification for hackathon"""
         # Simulate AI processing
         import time
         time.sleep(1)  # Simulate processing time
@@ -67,7 +67,7 @@ class ImageVerification:
             }
     
     def _get_hazard_name(self, class_id):
-        \"\"\"Convert class ID to hazard name\"\"\"
+        """Convert class ID to hazard name"""
         for name, cid in self.hazard_classes.items():
             if cid == class_id:
                 return name

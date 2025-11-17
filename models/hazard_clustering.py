@@ -10,7 +10,7 @@ class HazardClustering:
         self.scaler = StandardScaler()
     
     def cluster_hazards(self, hazards_df):
-        \"\"\"Cluster hazards using DBSCAN for hotspot detection\"\"\"
+        """Cluster hazards using DBSCAN for hotspot detection"""
         if len(hazards_df) < 5:
             return hazards_df.assign(cluster_id=-1)
         
@@ -30,7 +30,7 @@ class HazardClustering:
         return hazards_df
     
     def predict_risk_zones(self, hazards_df, weather_data=None):
-        \"\"\"Predict high-risk zones based on historical patterns\"\"\"
+        """Predict high-risk zones based on historical patterns"""
         # Calculate hazard density
         hazards_df['risk_score'] = self._calculate_risk_score(hazards_df)
         
@@ -52,7 +52,7 @@ class HazardClustering:
         return hazards_df
     
     def _calculate_risk_score(self, hazards_df):
-        \"\"\"Calculate comprehensive risk score\"\"\"
+        """Calculate comprehensive risk score"""
         base_score = hazards_df['severity'] * 20
         confidence_boost = hazards_df['confidence'] / 100 * 10
         cluster_boost = np.where(hazards_df['is_hotspot'], 30, 0)

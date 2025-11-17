@@ -11,7 +11,7 @@ class EnhancedRoutePlanner:
         self.road_network = self._create_road_network()
     
     def _create_road_network(self):
-        \"\"\"Create a graph representing the road network\"\"\"
+        """Create a graph representing the road network"""
         G = nx.Graph()
         
         # Add major Delhi locations as nodes
@@ -43,7 +43,7 @@ class EnhancedRoutePlanner:
         return G
     
     def find_safest_route(self, start, end, hazards_df, preferences=None):
-        \"\"\"Find safest route considering hazards and preferences\"\"\"
+        """Find safest route considering hazards and preferences"""
         # Validate inputs
         DataValidator.validate_route_parameters(start, end)
         
@@ -60,24 +60,24 @@ class EnhancedRoutePlanner:
                 required_hazard_cols = ['hazard_type', 'severity', 'lat', 'lon', 'confidence']
                 missing_cols = [col for col in required_hazard_cols if col not in hazards_df.columns]
                 if missing_cols:
-                    st.warning(f\"Missing hazard data columns: {missing_cols}\")
+                    st.warning(f"Missing hazard data columns: {missing_cols}")
             
             # For demo purposes, return mock route
             return self._mock_route(start, end, hazards_df)
                 
         except Exception as e:
-            st.error(f\"Route planning error: {e}\")
+            st.error(f"Route planning error: {e}")
             return self._fallback_route(start, end)
     
     def _mock_route(self, start, end, hazards_df):
-        \"\"\"Mock route calculation for demo with validation\"\"\"
+        """Mock route calculation for demo with validation"""
         # Validate start and end locations exist in network
         if start not in self.road_network.nodes:
-            st.warning(f\"Start location '{start}' not in network, using nearest known location\")
+            st.warning(f"Start location '{start}' not in network, using nearest known location")
             start = self._find_nearest_location(start)
         
         if end not in self.road_network.nodes:
-            st.warning(f\"End location '{end}' not in network, using nearest known location\") 
+            st.warning(f"End location '{end}' not in network, using nearest known location") 
             end = self._find_nearest_location(end)
         
         routes = [
@@ -126,7 +126,7 @@ class EnhancedRoutePlanner:
         return selected_route
     
     def _find_nearest_location(self, location):
-        \"\"\"Find nearest known location in the network\"\"\"
+        """Find nearest known location in the network"""
         known_locations = list(self.road_network.nodes.keys())
         
         # Simple matching - in real implementation, use geocoding
@@ -139,28 +139,28 @@ class EnhancedRoutePlanner:
         return 'Connaught Place'
     
     def _analyze_route_hazards(self, route, hazards_df):
-        \"\"\"Analyze hazards along the route\"\"\"
+        """Analyze hazards along the route"""
         if hazards_df.empty:
-            return {\"total_hazards\": 0, \"high_risk_hazards\": 0, \"risk_level\": \"Low\"}
+            return {"total_hazards": 0, "high_risk_hazards": 0, "risk_level": "Low"}
         
         # Count hazards near route points (simplified)
         total_hazards = len(hazards_df)
         high_risk_hazards = len(hazards_df[hazards_df['severity'] >= 4])
-        
-        risk_level = \"Low\"
+
+        risk_level = "Low"
         if high_risk_hazards > 5:
-            risk_level = \"High\"
+            risk_level = "High"
         elif high_risk_hazards > 2:
-            risk_level = \"Medium\"
+            risk_level = "Medium"
         
         return {
-            \"total_hazards\": total_hazards,
-            \"high_risk_hazards\": high_risk_hazards,
-            \"risk_level\": risk_level
+            "total_hazards": total_hazards,
+            "high_risk_hazards": high_risk_hazards,
+            "risk_level": risk_level
         }
     
     def _fallback_route(self, start, end):
-        \"\"\"Provide fallback route when main algorithm fails\"\"\"
+        """Provide fallback route when main algorithm fails"""
         return {
             'route': [start, end],
             'distance_km': 10.0,
@@ -169,21 +169,21 @@ class EnhancedRoutePlanner:
             'estimated_time': '25 minutes',
             'fallback': True,
             'hazard_exposure': 'Unknown',
-            'hazard_analysis': {\"total_hazards\": 0, \"high_risk_hazards\": 0, \"risk_level\": \"Unknown\"}
+            'hazard_analysis': {"total_hazards": 0, "high_risk_hazards": 0, "risk_level": "Unknown"}
         }
     
     def validate_route_result(self, route_result):
-        \"\"\"Validate that route result contains all required fields\"\"\"
+        """Validate that route result contains all required fields"""
         required_fields = ['route', 'distance_km', 'safety_score', 'estimated_time']
         
         for field in required_fields:
             if field not in route_result:
-                raise ValueError(f\"Missing required field in route result: {field}\")
+                raise ValueError(f"Missing required field in route result: {field}")
         
         if not isinstance(route_result['route'], list) or len(route_result['route']) < 2:
-            raise ValueError(\"Invalid route format\")
+            raise ValueError("Invalid route format")
         
         if not (0 <= route_result['safety_score'] <= 100):
-            raise ValueError(\"Safety score must be between 0 and 100\")
+            raise ValueError("Safety score must be between 0 and 100")
         
         return True

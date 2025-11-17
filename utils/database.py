@@ -7,11 +7,11 @@ from utils.error_handling import DataValidator
 
 class DatabaseManager:
     def __init__(self):
-        self.db_path = \"data/safetroute.db\"
+        self.db_path = "data/safetroute.db"
         self._init_database()
     
     def _init_database(self):
-        \"\"\"Initialize SQLite database with required tables\"\"\"
+        """Initialize SQLite database with required tables"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
@@ -93,7 +93,7 @@ class DatabaseManager:
         conn.close()
     
     def save_hazard(self, hazard_data):
-        \"\"\"Save hazard to database with validation\"\"\"
+        """Save hazard to database with validation"""
         DataValidator.validate_hazard_data(hazard_data)
         
         conn = sqlite3.connect(self.db_path)
@@ -121,19 +121,19 @@ class DatabaseManager:
             ))
             
             conn.commit()
-            self._log_event('INFO', f\"Hazard {hazard_data['id']} saved\", 'database')
+            self._log_event('INFO', f"Hazard {hazard_data['id']} saved", 'database')
             
         except sqlite3.IntegrityError as e:
-            self._log_event('ERROR', f\"Database integrity error: {e}\", 'database')
-            raise ValueError(f\"Invalid hazard data: {e}\")
+            self._log_event('ERROR', f"Database integrity error: {e}", 'database')
+            raise ValueError(f"Invalid hazard data: {e}")
         except Exception as e:
-            self._log_event('ERROR', f\"Error saving hazard: {e}\", 'database')
+            self._log_event('ERROR', f"Error saving hazard: {e}", 'database')
             raise
         finally:
             conn.close()
     
     def get_recent_hazards(self, hours=24, limit=1000):
-        \"\"\"Get recent hazards from database\"\"\"
+        """Get recent hazards from database"""
         conn = sqlite3.connect(self.db_path)
         query = '''
             SELECT * FROM hazards 
@@ -143,33 +143,33 @@ class DatabaseManager:
         '''
         try:
             df = pd.read_sql_query(query, conn, params=(f'-{hours} hours', limit))
-            self._log_event('INFO', f\"Retrieved {len(df)} recent hazards\", 'database')
+            self._log_event('INFO', f"Retrieved {len(df)} recent hazards", 'database')
             return df
         except Exception as e:
-            self._log_event('ERROR', f\"Error retrieving hazards: {e}\", 'database')
+            self._log_event('ERROR', f"Error retrieving hazards: {e}", 'database')
             return pd.DataFrame()
         finally:
             conn.close()
     
     def get_hazard_stats(self):
-        \"\"\"Get hazard statistics for dashboard\"\"\"
+        """Get hazard statistics for dashboard"""
         conn = sqlite3.connect(self.db_path)
         
         stats = {}
         
         try:
             # Total hazards by type
-            type_query = \"SELECT hazard_type, COUNT(*) as count FROM hazards GROUP BY hazard_type\"
+            type_query = "SELECT hazard_type, COUNT(*) as count FROM hazards GROUP BY hazard_type"
             type_stats = pd.read_sql_query(type_query, conn)
             stats['by_type'] = type_stats.to_dict('records')
             
             # Verification rate
-            verification_query = \"\"\"
+            verification_query = """
                 SELECT 
                     COUNT(*) as total,
                     SUM(CASE WHEN verified = 1 THEN 1 ELSE 0 END) as verified_count
                 FROM hazards
-            \"\"\"
+            """
             verification_stats = pd.read_sql_query(verification_query, conn)
             stats['verification_rate'] = (
                 verification_stats['verified_count'].iloc[0] / verification_stats['total'].iloc[0] * 100 
@@ -177,43 +177,43 @@ class DatabaseManager:
             )
             
             # Recent activity
-            recent_query = \"\"\"
+            recent_query = """
                 SELECT COUNT(*) as recent_count 
                 FROM hazards 
                 WHERE datetime(timestamp) >= datetime('now', '-1 hour')
-            \"\"\"
+            """
             recent_stats = pd.read_sql_query(recent_query, conn)
             stats['recent_activity'] = recent_stats['recent_count'].iloc[0]
             
             # Severity distribution
-            severity_query = \"SELECT severity, COUNT(*) as count FROM hazards GROUP BY severity ORDER BY severity\"
+            severity_query = "SELECT severity, COUNT(*) as count FROM hazards GROUP BY severity ORDER BY severity"
             severity_stats = pd.read_sql_query(severity_query, conn)
             stats['by_severity'] = severity_stats.to_dict('records')
             
         except Exception as e:
-            self._log_event('ERROR', f\"Error getting hazard stats: {e}\", 'database')
+            self._log_event('ERROR', f"Error getting hazard stats: {e}", 'database')
         finally:
             conn.close()
         
         return stats
     
     def get_user_reports(self, username):
-        \"\"\"Get reports by specific user\"\"\"
-        DataValidator.validate_user_input(username, \"dummy_password\")
+        """Get reports by specific user"""
+        DataValidator.validate_user_input(username, "dummy_password")
         
         conn = sqlite3.connect(self.db_path)
-        query = \"\"\"SELECT * FROM hazards WHERE reporter_id = ? ORDER BY timestamp DESC LIMIT 10\"\"\"
+        query = """SELECT * FROM hazards WHERE reporter_id = ? ORDER BY timestamp DESC LIMIT 10"""
         try:
             df = pd.read_sql_query(query, conn, params=(username,))
             return df.to_dict('records')
         except Exception as e:
-            self._log_event('ERROR', f\"Error getting user reports: {e}\", 'database')
+            self._log_event('ERROR', f"Error getting user reports: {e}", 'database')
             return []
         finally:
             conn.close()
     
     def _log_event(self, level, message, component):
-        \"\"\"Log system events\"\"\"
+        """Log system events"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
@@ -234,7 +234,7 @@ class DatabaseManager:
             conn.close()
     
     def cleanup_old_data(self, days_to_keep=30):
-        \"\"\"Clean up old data to prevent database bloat\"\"\"
+        """Clean up old data to prevent database bloat"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
@@ -253,17 +253,17 @@ class DatabaseManager:
             
             deleted_count = cursor.rowcount
             conn.commit()
-            self._log_event('INFO', f\"Cleaned up {deleted_count} old records\", 'database')
+            self._log_event('INFO', f"Cleaned up {deleted_count} old records", 'database')
             return deleted_count
             
         except Exception as e:
-            self._log_event('ERROR', f\"Error cleaning up data: {e}\", 'database')
+            self._log_event('ERROR', f"Error cleaning up data: {e}", 'database')
             return 0
         finally:
             conn.close()
     
     def get_database_stats(self):
-        \"\"\"Get database statistics\"\"\"
+        """Get database statistics"""
         conn = sqlite3.connect(self.db_path)
         stats = {}
         
@@ -276,11 +276,11 @@ class DatabaseManager:
             
             # Database size
             cursor = conn.cursor()
-            cursor.execute(\"SELECT page_count * page_size as size FROM pragma_page_count(), pragma_page_size()\")
+            cursor.execute("SELECT page_count * page_size as size FROM pragma_page_count(), pragma_page_size()")
             stats['database_size_bytes'] = cursor.fetchone()[0]
             
         except Exception as e:
-            self._log_event('ERROR', f\"Error getting database stats: {e}\", 'database')
+            self._log_event('ERROR', f"Error getting database stats: {e}", 'database')
         finally:
             conn.close()
         

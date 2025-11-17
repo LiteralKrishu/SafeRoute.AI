@@ -10,15 +10,15 @@ class CommunityReporting:
         self._ensure_reports_file()
     
     def _ensure_reports_file(self):
-        \"\"\"Create reports file if it doesn't exist\"\"\"
+        """Create reports file if it doesn't exist"""
         os.makedirs(os.path.dirname(self.reports_file), exist_ok=True)
         if not os.path.exists(self.reports_file):
             with open(self.reports_file, 'w') as f:
                 json.dump([], f)
     
     def render_report_form(self):
-        \"\"\"Render community hazard reporting form\"\"\"
-        st.subheader("ðŸ“ Report a Hazard")
+        """Render community hazard reporting form"""
+        st.subheader("Report a Hazard")
         
         with st.form("hazard_report_form", clear_on_submit=True):
             col1, col2 = st.columns(2)
@@ -52,7 +52,7 @@ class CommunityReporting:
                 )
             
             # Location options
-            st.subheader("ðŸ“ Location")
+            st.subheader("Location")
             location_method = st.radio(
                 "Location Method:",
                 ["Use Current Location", "Select on Map", "Enter Address"]
@@ -76,7 +76,7 @@ class CommunityReporting:
         return None
     
     def _submit_report(self, hazard_type, severity, description, location_desc, lat, lon, image_file):
-        \"\"\"Process and store hazard report\"\"\"
+        """Process and store hazard report"""
         report_id = f"COMM_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         
         report_data = {
@@ -120,13 +120,13 @@ class CommunityReporting:
         self._save_report(report_data)
         
         # Show confirmation
-        st.success("âœ… Hazard report submitted successfully!")
+        st.success("Hazard report submitted successfully!")
         st.info(f"Report ID: {report_id} | Status: {report_data['status'].replace('_', ' ').title()}")
-        
+
         return report_data
     
     def _save_report(self, report_data):
-        \"\"\"Save report to JSON file\"\"\"
+        """Save report to JSON file"""
         try:
             with open(self.reports_file, 'r') as f:
                 reports = json.load(f)
@@ -140,7 +140,7 @@ class CommunityReporting:
             st.error(f"Failed to save report: {e}")
     
     def get_pending_reports(self):
-        \"\"\"Get reports pending verification\"\"\"
+        """Get reports pending verification"""
         try:
             with open(self.reports_file, 'r') as f:
                 reports = json.load(f)
@@ -150,7 +150,7 @@ class CommunityReporting:
             return []
     
     def update_report_status(self, report_id, status, notes=""):
-        \"\"\"Update report verification status\"\"\"
+        """Update report verification status"""
         try:
             with open(self.reports_file, 'r') as f:
                 reports = json.load(f)

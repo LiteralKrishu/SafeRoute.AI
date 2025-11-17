@@ -4,12 +4,12 @@ import sys
 
 def setup_production():
     \"\"\"Production setup script\"\"\"
-    print("ðŸš€ Setting up SafeRoute.AI for Production...")
+    print("[INFO] Setting up SafeRoute.AI for Production...")
     
     # Check Python version
     python_version = sys.version_info
     if python_version < (3, 8):
-        print("âŒ Python 3.8 or higher required")
+        print("[ERROR] Python 3.8 or higher required")
         sys.exit(1)
     
     # Create production directory structure
@@ -25,14 +25,16 @@ def setup_production():
     
     for directory in directories:
         os.makedirs(directory, exist_ok=True)
-        print(f"âœ… Created directory: {directory}")
+        print(f"[OK] Created directory: {directory}")
     
     # Install production dependencies
-    print("ðŸ“¦ Installing production dependencies...")
-    subprocess.run([sys.executable, '-m', 'pip', 'install', '-r', 'requirements.txt'])
+    print("[INFO] Installing production dependencies (requirements.txt)...")
+    result = subprocess.run([sys.executable, '-m', 'pip', 'install', '-r', 'requirements.txt'])
+    if result.returncode != 0:
+        print("[WARN] pip install returned a non-zero status. Please check the output above for errors.")
     
-    print("\nðŸŽ‰ Production setup completed!")
-    print("\nðŸ“‹ Next Steps:")
+    print("\n[INFO] Production setup completed!")
+    print("\nNext Steps:")
     print("1. Update .env with your production API keys")
     print("2. Configure your web server (nginx/apache)")
     print("3. Set up SSL certificates")
