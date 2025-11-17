@@ -48,16 +48,16 @@ class HazardMap:
             icon_type, color = self.get_hazard_icon(hazard['hazard_type'], hazard['severity'])
             
             # Create popup content
-            popup_content = f\"\"\"
+            popup_content = f"""
             <div style="width: 200px;">
-                <h4>ðŸš¨ {hazard['hazard_type']}</h4>
+                <h4>🔔 {hazard['hazard_type']}</h4>
                 <p><strong>Severity:</strong> {hazard['severity']}/5</p>
                 <p><strong>Confidence:</strong> {hazard['confidence']}%</p>
                 <p><strong>Location:</strong> {hazard['location']}</p>
                 <p><strong>Reported:</strong> {hazard['timestamp']}</p>
                 <p><strong>Description:</strong> {hazard['description']}</p>
             </div>
-            \"\"\"
+            """
             
             # Add marker to cluster
             folium.Marker(
