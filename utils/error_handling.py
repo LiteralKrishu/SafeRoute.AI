@@ -15,12 +15,6 @@ class ErrorHandler:
                 return func(*args, **kwargs)
             except Exception as e:
                 st.error(f"Error in {func.__name__}: {str(e)}")
-
-                # Log detailed error for debugging
-                if st.session_state.get('user', {}).get('role') == 'admin':
-                    with st.expander("Technical Details (Admin Only)"):
-                        st.code(traceback.format_exc())
-
                 # Provide fallback based on function type
                 return ErrorHandler._get_fallback_result(func.__name__)
         return wrapper

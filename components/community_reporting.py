@@ -88,7 +88,7 @@ class CommunityReporting:
             "lat": lat,
             "lon": lon,
             "timestamp": datetime.now().isoformat(),
-            "reporter": st.session_state.user['username'] if 'user' in st.session_state else "anonymous",
+            "reporter": "community_user",
             "status": "pending_verification"
         }
         
@@ -159,7 +159,7 @@ class CommunityReporting:
                 if report['id'] == report_id:
                     report['status'] = status
                     report['verified_at'] = datetime.now().isoformat()
-                    report['verified_by'] = st.session_state.user['username']
+                    report['verified_by'] = "admin_user"
                     if notes:
                         report['verification_notes'] = notes
                     break

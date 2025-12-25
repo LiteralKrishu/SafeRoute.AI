@@ -8,7 +8,6 @@ from components.enhanced_safety_gpt import EnhancedSafetyGPT
 from components.enhanced_data_ingestion import EnhancedDataIngestion
 from components.community_reporting import CommunityReporting
 from models.hazard_clustering import HazardClustering
-from utils.authentication import AuthenticationSystem
 from utils.database import DatabaseManager
 from utils.error_handling import ErrorHandler
 from utils.performance import PerformanceMonitor
@@ -19,7 +18,6 @@ Config.validate_config()
 
 class FinalSafeRouteApp:
     def __init__(self):
-        self.auth = AuthenticationSystem()
         self.db = DatabaseManager()
         self.data_ingestion = EnhancedDataIngestion()
         self.route_planner = EnhancedRoutePlanner()
@@ -30,12 +28,7 @@ class FinalSafeRouteApp:
         self.hazard_map = HazardMap()
         
     def render_sidebar(self):
-        """Render enhanced sidebar with authentication"""
-        # Authentication
-        user = self.auth.render_login_sidebar()
-        
-        if user is None:
-            return None
+        """Render enhanced sidebar with filters"""
             
         st.sidebar.markdown("---")
         
@@ -64,7 +57,6 @@ class FinalSafeRouteApp:
             confidence = st.slider("Min Confidence", 0, 100, 70)
         
         return {
-            "user": user,
             "hazard_types": hazard_types,
             "sources": sources,
             "min_severity": severity,
@@ -73,26 +65,18 @@ class FinalSafeRouteApp:
     
     def render_main_dashboard(self, filters):
         """Render enhanced main dashboard"""
-        if filters is None:
-            st.warning("ðŸ” Please log in to access SafeRoute.AI")
-            return
-        
-        user = filters["user"]
-        
-        # Enhanced header with user info
+        # Enhanced header
         col1, col2, col3 = st.columns([3, 1, 1])
         with col1:
-            st.title("ðŸš— SafeRoute.AI - Real-Time Hazard Intelligence")
-            st.markdown("Live hazard monitoring â€¢ Safe route planning â€¢ AI-powered interventions")
+            st.title("🚗 SafeRoute.AI - Real-Time Hazard Intelligence")
+            st.markdown("Live hazard monitoring • Safe route planning • AI-powered interventions")
         
         with col2:
             st.metric("Active Hazards", "247", "+12 today")
-            st.metric("Verified Reports", "89%", "4% â†‘")
+            st.metric("Verified Reports", "89%", "4% ↑")
         
         with col3:
-            st.write(f"**User:** {user['username']}")
-            st.write(f"**Role:** {user['role'].title()}")
-            if st.button("ðŸ”„ Refresh Data"):
+            if st.button("🔄 Refresh Data"):
                 st.rerun()
         
         st.markdown("---")
@@ -119,7 +103,7 @@ class FinalSafeRouteApp:
             self.render_safety_recommendations_tab(filters)
         
         with tab5:
-            self.render_enhanced_analytics_tab(user)
+            self.render_enhanced_analytics_tab()
     
     @ErrorHandler.handle_errors
     def render_enhanced_hazard_map(self, filters):
@@ -364,13 +348,9 @@ class FinalSafeRouteApp:
                         if st.button("Update", key=f"update_{i}"):
                             st.success(f"Progress updated to {current_progress}%")
     
-    def render_enhanced_analytics_tab(self, user):
+    def render_enhanced_analytics_tab(self):
         """Render advanced analytics dashboard"""
-        st.subheader("ðŸ“Š Advanced Analytics & Business Intelligence")
-        
-        if 'user' not in st.session_state or st.session_state.user['role'] != 'admin':
-            st.warning("ðŸ”’ Admin access required for advanced analytics")
-            return
+        st.subheader("📊 Advanced Analytics & Business Intelligence")
         
         tab1, tab2, tab3, tab4 = st.tabs([
             "Trend Analysis", "Risk Forecasting", "Cost-Benefit", "System Analytics"

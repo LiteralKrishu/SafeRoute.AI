@@ -225,7 +225,7 @@ class DatabaseManager:
                 level,
                 message,
                 component,
-                st.session_state.get('user', {}).get('username', 'system')
+                'system'
             ))
             conn.commit()
         except:

@@ -23,7 +23,6 @@ def setup_environment():
     print("1. Update .env file with your API keys")
     print("2. Install dependencies: pip install -r requirements.txt")
     print("3. Run the app: streamlit run app_final.py")
-    print("4. Default login: admin/admin123 or user/user123")
 
 if __name__ == "__main__":
     setup_environment()

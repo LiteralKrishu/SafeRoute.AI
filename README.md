@@ -79,7 +79,6 @@ SafeRoute-AI/
 │   ├── __init__.py
 │   ├── config.py                    # Core configuration
 │   ├── database.py                  # Database manager
-│   ├── authentication.py            # Auth system
 │   ├── error_handling.py            # Error handling & validation
 │   ├── performance.py               # Performance utilities
 │   └── cache_manager.py             # Caching system
@@ -213,7 +212,6 @@ SafeRoute-AI/
 │   ├── __init__.py
 │   ├── config.py                    # Core configuration loader
 │   ├── database.py                  # Enhanced DatabaseManager
-│   ├── authentication.py            # User login/registration system
 │   ├── error_handling.py            # Error handling & validation decorators
 │   ├── performance.py               # Performance monitoring utilities
 │   └── cache_manager.py             # Redis + memory caching system
@@ -464,25 +462,20 @@ CREATE TABLE recommendations (
 
 ## 🔒 Security
 
-### Authentication
-- **Default Demo Credentials:**
-  - Username: `admin` | Password: `admin123`
-  - Username: `user` | Password: `user123`
-- **Change in Production:** Update credentials in `utils/authentication.py`
+### Public Access
+- SafeRoute.AI is now a **public-access application** with no login required
+- All features are available to all users without authentication
+- Anyone can report hazards and view real-time safety data
 
-### Password Policy
-- Minimum length: 6 characters
-- Required: Uppercase, lowercase, numbers
-- Hashing: SHA-256 with salt
-
-### Session Management
-- **Timeout:** 120 minutes
-- **Renewal Threshold:** 30 minutes
-- **Max Sessions:** 5 per user
-
-### File Upload Security
-- **Allowed Types:** JPG, JPEG, PNG
+### Data Validation
+- All user inputs are validated for safety and correctness
+- File uploads are restricted to safe image formats (JPG, JPEG, PNG)
 - **Maximum Size:** 10 MB
+
+### Privacy
+- Community reports are stored anonymously
+- User location data is not personally identifiable
+- All data is stored locally in the application database
 - **Validation:** MIME type + extension verification
 
 ### Data Protection
