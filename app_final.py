@@ -421,13 +421,13 @@ class FinalSafeRouteApp:
         st.write("**Cost-Benefit Analysis**")
         
         interventions = [
-            {"name": "Pothole Repair Program", "cost": "â‚¹50L", "benefit": "â‚¹2.5Cr", "roi": "400%"},
-            {"name": "Drainage System Upgrade", "cost": "â‚¹1.2Cr", "benefit": "â‚¹4Cr", "roi": "233%"},
-            {"name": "Smart Signage Installation", "cost": "â‚¹75L", "benefit": "â‚¹1.8Cr", "roi": "140%"}
+            {"name": "Pothole Repair Program", "cost": "INR 50L", "benefit": "INR 2.5Cr", "roi": "400%"},
+            {"name": "Drainage System Upgrade", "cost": "INR 1.2Cr", "benefit": "INR 4Cr", "roi": "233%"},
+            {"name": "Smart Signage Installation", "cost": "INR 75L", "benefit": "INR 1.8Cr", "roi": "140%"}
         ]
         
         for intervention in interventions:
-            with st.expander(f"ðŸ’° {intervention['name']}"):
+            with st.expander(f"💰 {intervention['name']}"):
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     st.metric("Cost", intervention['cost'])
@@ -443,21 +443,18 @@ class FinalSafeRouteApp:
         # Performance metrics
         col1, col2, col3, col4 = st.columns(4)
         with col1:
-            st.metric("API Response Time", "142ms", "12ms â†“")
+            st.metric("API Response Time", "142ms", "12ms ↓")
         with col2:
-            st.metric("Data Accuracy", "94.2%", "1.8% â†‘")
+            st.metric("Data Accuracy", "94.2%", "1.8% ↑")
         with col3:
-            st.metric("System Uptime", "99.8%", "0.1% â†‘")
+            st.metric("System Uptime", "99.8%", "0.1% ↑")
         with col4:
-            st.metric("User Satisfaction", "4.7/5", "0.2 â†‘")
+            st.metric("User Satisfaction", "4.7/5", "0.2 ↑")
     
     def run(self):
         """Run the final application"""
-        filters = self.auth.render_login_sidebar()
-        if filters and filters.get('user'):
-            self.render_main_dashboard(filters)
-        elif filters is None:
-            st.warning("ðŸ” Please log in to access SafeRoute.AI")
+        filters = self.render_sidebar()
+        self.render_main_dashboard(filters)
 
 if __name__ == "__main__":
     # Run the application
