@@ -145,7 +145,7 @@ class EnhancedSafetyGPT:
                 "intervention": "Install retroreflective warning signs with hazard markers at 150m intervals. Implement rumble strips 200m before critical points. Add chevron alignment signs and solar-powered blinkers for night visibility",
                 "references": "IRC:67-2012 Table 9-1, MoRTH Chapter 8, IRC:99-1988 Section 4.3",
                 "impact": "Reduce curve-related accidents by 60%, improve driver awareness and reaction time, enhance night-time safety by 50%",
-                "estimated_cost": "â‚¹1.2-1.8 lakhs per location",
+                "estimated_cost": "1.2-1.8 lakhs per location",
                 "timeline": "2-3 weeks",
                 "implementation_status": random.randint(0, 10),
                 "risk_reduction": "55%"

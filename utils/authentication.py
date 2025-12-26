@@ -74,7 +74,7 @@ class AuthenticationSystem:
     
     def render_login_sidebar(self):
         """Render login form in sidebar"""
-        st.sidebar.title("ðŸ” Authentication")
+        st.sidebar.title(" Authentication")
         
         if 'user' not in st.session_state:
             st.session_state.user = None

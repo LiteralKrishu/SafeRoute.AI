@@ -50,7 +50,7 @@ class HazardMap:
             # Create popup content
             popup_content = f"""
             <div style="width: 200px;">
-                <h4>🔔 {hazard['hazard_type']}</h4>
+                <h4> {hazard['hazard_type']}</h4>
                 <p><strong>Severity:</strong> {hazard['severity']}/5</p>
                 <p><strong>Confidence:</strong> {hazard['confidence']}%</p>
                 <p><strong>Location:</strong> {hazard['location']}</p>

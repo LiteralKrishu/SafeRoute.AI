@@ -1,4 +1,4 @@
-﻿import streamlit as st
+import streamlit as st
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
@@ -33,7 +33,7 @@ class FinalSafeRouteApp:
         st.sidebar.markdown("---")
         
         # Hazard type filters
-        st.sidebar.subheader("ðŸ”„ Hazard Filters")
+        st.sidebar.subheader("Hazard Filters")
         hazard_types = st.sidebar.multiselect(
             "Select Hazard Types:",
             ["Potholes", "Flooding", "Accidents", "Road Closures", 
@@ -42,7 +42,7 @@ class FinalSafeRouteApp:
         )
         
         # Data source filters
-        st.sidebar.subheader("ðŸ“¡ Data Sources")
+        st.sidebar.subheader("Data Sources")
         sources = st.sidebar.multiselect(
             "Include Data From:",
             ["Community Reports", "Traffic APIs", "Weather Data", "Government Feeds"],
@@ -68,7 +68,7 @@ class FinalSafeRouteApp:
         # Enhanced header
         col1, col2, col3 = st.columns([3, 1, 1])
         with col1:
-            st.title("🚗 SafeRoute.AI - Real-Time Hazard Intelligence")
+            st.title("SafeRoute.AI - Real-Time Hazard Intelligence")
             st.markdown("Live hazard monitoring • Safe route planning • AI-powered interventions")
         
         with col2:
@@ -76,18 +76,18 @@ class FinalSafeRouteApp:
             st.metric("Verified Reports", "89%", "4% ↑")
         
         with col3:
-            if st.button("🔄 Refresh Data"):
+            if st.button("Refresh Data"):
                 st.rerun()
         
         st.markdown("---")
         
         # Enhanced tabs
         tab1, tab2, tab3, tab4, tab5 = st.tabs([
-            "ðŸ—ºï¸ Live Hazard Map", 
-            "ðŸš¦ Safe Route Planner", 
-            "ðŸ“ Report Hazard",
-            "ðŸ¤– Safety Recommendations", 
-            "ðŸ“Š Analytics & Admin"
+            "Live Hazard Map", 
+            "Safe Route Planner", 
+            "Report Hazard",
+            "Safety Recommendations", 
+            "Analytics & Admin"
         ])
         
         with tab1:
@@ -108,13 +108,13 @@ class FinalSafeRouteApp:
     @ErrorHandler.handle_errors
     def render_enhanced_hazard_map(self, filters):
         """Render enhanced hazard map with clustering"""
-        st.subheader("ðŸ—ºï¸ Live Hazard Intelligence Map")
+        st.subheader("Live Hazard Intelligence Map")
         
         col1, col2 = st.columns([3, 1])
         
         with col1:
             # Load and process hazards
-            with st.spinner("ðŸ”„ Loading real-time hazard data..."):
+            with st.spinner("Loading real-time hazard data..."):
                 hazards_df = self.data_ingestion.get_real_time_hazards()
                 
                 # Apply clustering and risk prediction
@@ -133,21 +133,21 @@ class FinalSafeRouteApp:
     
     def render_hazard_insights(self, hazards_df):
         """Render hazard insights and alerts"""
-        st.subheader("ðŸ“ˆ Hazard Insights")
+        st.subheader("Hazard Insights")
         
         if not hazards_df.empty:
             stats = self.db.get_hazard_stats()
             
-            st.metric("ðŸš¨ High Risk Zones", 
+            st.metric("High Risk Zones", 
                      len(hazards_df[hazards_df['severity'] >= 4]))
-            st.metric("ðŸ” Hotspots Identified", 
+            st.metric("Hotspots Identified", 
                      len(hazards_df[hazards_df.get('is_hotspot', False)]))
-            st.metric("âœ… Verification Rate", f"{stats['verification_rate']:.1f}%")
+            st.metric("Verification Rate", f"{stats['verification_rate']:.1f}%")
             
             # Alert for emerging patterns
             recent_count = stats['recent_activity']
             if recent_count > 10:
-                st.warning(f"ðŸš¨ High activity: {recent_count} hazards in last hour")
+                st.warning(f"High activity: {recent_count} hazards in last hour")
             
             # Top hazard types
             st.write("**Top Hazards:**")
@@ -159,7 +159,7 @@ class FinalSafeRouteApp:
     @ErrorHandler.handle_errors
     def render_route_planner_tab(self):
         """Render enhanced route planning interface"""
-        st.subheader("ðŸš— Smart Route Planning")
+        st.subheader("Smart Route Planning")
         
         col1, col2 = st.columns(2)
         
@@ -168,7 +168,7 @@ class FinalSafeRouteApp:
             end_location = st.text_input("Destination", "India Gate, Delhi")
             
             # Advanced routing options
-            with st.expander("âš™ï¸ Advanced Routing Options"):
+            with st.expander("Advanced Routing Options"):
                 col3, col4 = st.columns(2)
                 with col3:
                     avoid_high_risk = st.checkbox("Avoid High Risk", True)
@@ -177,8 +177,8 @@ class FinalSafeRouteApp:
                     consider_weather = st.checkbox("Consider Weather", True)
                     max_detour = st.slider("Max Detour (%)", 10, 100, 25)
             
-            if st.button("ðŸŽ¯ Find Safest Route", type="primary"):
-                with st.spinner("ðŸ¤– Calculating optimal safe route..."):
+            if st.button("Find Safest Route", type="primary"):
+                with st.spinner("Calculating optimal safe route..."):
                     hazards_df = self.data_ingestion.get_real_time_hazards()
                     route_result = self.route_planner.find_safest_route(
                         start_location, end_location, hazards_df,
@@ -193,7 +193,7 @@ class FinalSafeRouteApp:
             if 'route_result' in st.session_state:
                 route = st.session_state['route_result']
                 
-                st.subheader("ðŸ“ Route Analysis")
+                st.subheader("Route Analysis")
                 st.metric("Safety Score", f"{route['safety_score']}/100")
                 st.metric("Distance", f"{route['distance_km']:.1f} km")
                 st.metric("Est. Time", route['estimated_time'])
@@ -207,11 +207,11 @@ class FinalSafeRouteApp:
                 if route.get('hazards_avoided'):
                     st.write("**Hazards Avoided:**")
                     for hazard in route['hazards_avoided'][:5]:
-                        st.write(f"âœ… {hazard}")
+                        st.write(f"{hazard}")
     
     def render_community_reporting_tab(self):
         """Render community reporting and engagement"""
-        st.subheader("ðŸ“ Community Safety Ecosystem")
+        st.subheader("Community Safety Ecosystem")
         
         tab1, tab2, tab3 = st.tabs(["Report Hazard", "My Reports", "Community Stats"])
         
@@ -233,7 +233,7 @@ class FinalSafeRouteApp:
         user_reports = self.db.get_user_reports(st.session_state.user['username'])
         
         if user_reports:
-            st.subheader("ðŸ“‹ My Submitted Reports")
+            st.subheader("My Submitted Reports")
             for report in user_reports[-5:]:  # Last 5 reports
                 with st.expander(f"Report {report['id']} - {report['hazard_type']}"):
                     col1, col2 = st.columns(2)
@@ -261,7 +261,7 @@ class FinalSafeRouteApp:
             st.metric("Reports This Week", "89")
         
         # Leaderboard (mock)
-        st.subheader("ðŸ† Top Contributors")
+        st.subheader("Top Contributors")
         contributors = [
             {"name": "SafetyHero", "reports": 45, "verified": 38},
             {"name": "RoadGuard", "reports": 32, "verified": 29},
@@ -275,7 +275,7 @@ class FinalSafeRouteApp:
     @ErrorHandler.handle_errors
     def render_safety_recommendations_tab(self, filters):
         """Render AI safety advisor with enhanced capabilities"""
-        st.subheader("ðŸ¤– AI Safety Advisor")
+        st.subheader("AI Safety Advisor")
         
         # Real-time analysis
         col1, col2 = st.columns(2)
@@ -300,8 +300,8 @@ class FinalSafeRouteApp:
                 default=["Pothole Management", "Drainage Systems"]
             )
             
-            if st.button("ðŸš€ Generate Comprehensive Analysis", type="primary"):
-                with st.spinner("ðŸ§  AI is analyzing safety patterns..."):
+            if st.button("Generate Comprehensive Analysis", type="primary"):
+                with st.spinner("AI is analyzing safety patterns..."):
                     hazards_df = self.data_ingestion.get_real_time_hazards()
                     recommendations = self.safety_gpt.generate_comprehensive_analysis(
                         scope=analysis_scope,
@@ -317,11 +317,11 @@ class FinalSafeRouteApp:
     
     def render_ai_analysis(self, analysis):
         """Render comprehensive AI analysis"""
-        st.subheader("ðŸŽ¯ AI Safety Recommendations")
+        st.subheader("AI Safety Recommendations")
         
         for i, rec in enumerate(analysis):
             with st.expander(
-                f"ðŸ“ {rec['title']} - Priority: {rec['priority']} - "
+                f"{rec['title']} - Priority: {rec['priority']} - "
                 f"Impact: {rec.get('risk_reduction', 'N/A')}",
                 expanded=i == 0
             ):
@@ -329,12 +329,12 @@ class FinalSafeRouteApp:
                 col1, col2 = st.columns([3, 1])
                 
                 with col1:
-                    st.write(f"**ðŸš¨ Issue:** {rec['issue']}")
-                    st.write(f"**ðŸ› ï¸ Recommended Action:** {rec['intervention']}")
-                    st.write(f"**ðŸ“š Standards Compliance:** {rec['references']}")
-                    st.write(f"**ðŸ’° Cost Estimate:** {rec['estimated_cost']}")
-                    st.write(f"**â±ï¸ Timeline:** {rec['timeline']}")
-                    st.write(f"**ðŸ“ˆ Expected Impact:** {rec['impact']}")
+                    st.write(f"**Issue:** {rec['issue']}")
+                    st.write(f"**Recommended Action:** {rec['intervention']}")
+                    st.write(f"**Standards Compliance:** {rec['references']}")
+                    st.write(f"**Cost Estimate:** {rec['estimated_cost']}")
+                    st.write(f"**Timeline:** {rec['timeline']}")
+                    st.write(f"**Expected Impact:** {rec['impact']}")
                 
                 with col2:
                     if st.session_state.user['role'] == 'admin':
@@ -350,7 +350,7 @@ class FinalSafeRouteApp:
     
     def render_enhanced_analytics_tab(self):
         """Render advanced analytics dashboard"""
-        st.subheader("📊 Advanced Analytics & Business Intelligence")
+        st.subheader("Advanced Analytics & Business Intelligence")
         
         tab1, tab2, tab3, tab4 = st.tabs([
             "Trend Analysis", "Risk Forecasting", "Cost-Benefit", "System Analytics"
@@ -401,7 +401,7 @@ class FinalSafeRouteApp:
             include_traffic = st.checkbox("Include Traffic Patterns", True)
         
         if st.button("Generate Risk Forecast"):
-            with st.spinner("ðŸ”® Generating risk predictions..."):
+            with st.spinner("Generating risk predictions..."):
                 # Mock forecast results
                 st.success("Risk forecast generated successfully!")
                 
@@ -427,7 +427,7 @@ class FinalSafeRouteApp:
         ]
         
         for intervention in interventions:
-            with st.expander(f"💰 {intervention['name']}"):
+            with st.expander(f"{intervention['name']}"):
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     st.metric("Cost", intervention['cost'])

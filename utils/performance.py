@@ -12,7 +12,7 @@ def time_execution(func):
         
         # Log slow operations
         if execution_time > 2.0:  # More than 2 seconds
-            st.sidebar.warning(f"âš ï¸ Slow operation: {func.__name__} took {execution_time:.2f}s")
+            st.sidebar.warning(f" Slow operation: {func.__name__} took {execution_time:.2f}s")
         
         return result
     return wrapper
@@ -27,7 +27,7 @@ def retry_on_failure(max_retries=3, delay=1):
                     return func(*args, **kwargs)
                 except Exception as e:
                     if attempt == max_retries - 1:
-                        st.error(f"ðŸš¨ Operation failed after {max_retries} attempts: {e}")
+                        st.error(f" Operation failed after {max_retries} attempts: {e}")
                         raise
                     time.sleep(delay * (attempt + 1))
             return None
